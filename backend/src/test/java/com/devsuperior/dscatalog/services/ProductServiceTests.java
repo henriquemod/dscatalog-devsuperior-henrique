@@ -59,7 +59,7 @@ public class ProductServiceTests {
 		page = new PageImpl<>(List.of(product));
 
 		Mockito.when(repository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
-		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(page);
+		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(product);
 
 		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
 		Mockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
