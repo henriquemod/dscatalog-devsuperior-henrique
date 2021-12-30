@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import ButtonIcon from 'components/ButtonIcon';
-
-import './styles.css';
+import { requestBackendLogin } from 'util/requests';
 import { useForm } from 'react-hook-form';
+import './styles.css';
 
 type FormData = {
   username: string;
@@ -12,8 +12,10 @@ type FormData = {
 const Login = () => {
   const { register, handleSubmit } = useForm<FormData>();
 
-  const onSubmit = (formData: FormData) => {
+  const onSubmit = async (formData: FormData) => {
     console.log(formData);
+    const loginRequest = await requestBackendLogin(formData);
+    console.log(loginRequest);
   };
 
   return (
