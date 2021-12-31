@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import ButtonIcon from 'components/ButtonIcon';
-import { requestBackendLogin } from 'util/requests';
+import { getAuthData, requestBackendLogin, saveAuthData } from 'util/requests';
 import { useForm } from 'react-hook-form';
 import './styles.css';
 import { useState } from 'react';
@@ -21,7 +21,10 @@ const Login = () => {
   const onSubmit = async (formData: FormData) => {
     try {
       const loginRequest = await requestBackendLogin(formData);
-      console.log(loginRequest);
+      saveAuthData(loginRequest.data);
+      const token = getAuthData().access_token;
+      console.log(token);
+
       setHasError(false);
     } catch (error) {
       setHasError(true);
