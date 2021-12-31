@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ButtonIcon from 'components/ButtonIcon';
-import { getAuthData, requestBackendLogin, saveAuthData } from 'util/requests';
+import { requestBackendLogin, saveAuthData } from 'util/requests';
 import { useForm } from 'react-hook-form';
 import './styles.css';
 import { useState } from 'react';
@@ -17,14 +17,13 @@ const Login = () => {
     formState: { errors },
   } = useForm<FormData>();
   const [hasError, setHasError] = useState(false);
+  const history = useHistory();
 
   const onSubmit = async (formData: FormData) => {
     try {
       const loginRequest = await requestBackendLogin(formData);
       saveAuthData(loginRequest.data);
-      const token = getAuthData().access_token;
-      console.log(token);
-
+      history.push('/admin');
       setHasError(false);
     } catch (error) {
       setHasError(true);
