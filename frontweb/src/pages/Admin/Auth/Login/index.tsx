@@ -1,9 +1,15 @@
 import { Link, useHistory } from 'react-router-dom';
 import ButtonIcon from 'components/ButtonIcon';
-import { requestBackendLogin, saveAuthData } from 'util/requests';
+import {
+  getTokenData,
+  isAuthenticated,
+  requestBackendLogin,
+  saveAuthData,
+} from 'util/requests';
 import { useForm } from 'react-hook-form';
 import './styles.css';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { AuthContext } from 'AuthContext';
 
 type FormData = {
   username: string;
@@ -18,11 +24,16 @@ const Login = () => {
   } = useForm<FormData>();
   const [hasError, setHasError] = useState(false);
   const history = useHistory();
+  const { setAuthContextData } = useContext(AuthContext);
 
   const onSubmit = async (formData: FormData) => {
     try {
       const loginRequest = await requestBackendLogin(formData);
       saveAuthData(loginRequest.data);
+      setAuthContextData({
+        authenticated: isAuthenticated(),
+        tokenData: getTokenData(),
+      });
       history.push('/admin');
       setHasError(false);
     } catch (error) {
