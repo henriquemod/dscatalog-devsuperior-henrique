@@ -31,8 +31,8 @@ const Form = () => {
     };
 
     try {
-      const submitData = await requestBackend(config);
-      console.log(submitData.data);
+      await requestBackend(config);
+      history.push('/admin/products');
     } catch (error) {
       console.log('ERROR');
       console.log(error);
