@@ -14,16 +14,16 @@ const List = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getProducts();
+    getProducts(0);
   }, []);
 
-  const getProducts = () => {
+  const getProducts = (pageNumber: number) => {
     const config: AxiosRequestConfig = {
       method: 'GET',
       url: '/products',
       params: {
-        page: 0,
-        size: 50,
+        page: pageNumber,
+        size: 3,
       },
     };
 
@@ -50,13 +50,17 @@ const List = () => {
             <ProductCrudCard
               product={product}
               onDelete={() => {
-                getProducts();
+                getProducts(page.number);
               }}
             />
           </div>
         ))}
       </div>
-      <Pagination />
+      <Pagination
+        pageCount={page ? page.totalPages : 0}
+        range={3}
+        onChange={getProducts}
+      />
     </div>
   );
 };
