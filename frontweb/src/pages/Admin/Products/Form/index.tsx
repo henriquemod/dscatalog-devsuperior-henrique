@@ -4,6 +4,7 @@ import CurrencyInput from 'react-currency-input-field';
 import { useForm, Controller } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
 import Select from 'react-select';
+import { toast } from 'react-toastify';
 import { Category } from 'types/category';
 import { Product } from 'types/product';
 import { requestBackend } from 'util/requests';
@@ -60,10 +61,10 @@ const Form = () => {
 
     try {
       await requestBackend(config);
+      toast.info('Produto criado com sucesso!');
       history.push('/admin/products');
     } catch (error) {
-      console.log('ERROR');
-      console.log(error);
+      toast.error('Ouch!!! Algo deu errado');
     }
   };
 
