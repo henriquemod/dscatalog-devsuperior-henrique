@@ -39,6 +39,7 @@
 .btn-product-filter-clear {
   font-weight: bold;
   border-radius: 10px;
+  text-transform: uppercase;
 }
 
 .btn-product-filter-word {
