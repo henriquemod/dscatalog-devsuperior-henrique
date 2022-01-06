@@ -21,13 +21,16 @@ const Pagination = ({ pageCount, range, onChange, forcePage }: Props) => {
       breakClassName="pagination-item"
       previousClassName="arrow-previous"
       previousLabel={
-        <div className="pagination-arrow-container">
+        <div
+          className="pagination-arrow-container"
+          data-testid="arrow-previous"
+        >
           <ArrowIcon />
         </div>
       }
       nextClassName="arrow-next"
       nextLabel={
-        <div className="pagination-arrow-container">
+        <div className="pagination-arrow-container" data-testid="arrow-next">
           <ArrowIcon />
         </div>
       }
