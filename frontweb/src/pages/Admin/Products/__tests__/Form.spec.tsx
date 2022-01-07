@@ -1,9 +1,10 @@
+/* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Router, useParams } from 'react-router-dom';
 import history from 'util/history';
 import Form from '../Form';
-import { server } from './fixtures';
+import { server, productResponse } from './fixtures';
 import selectEvent from 'react-select-event';
 import { ToastContainer } from 'react-toastify';
 
@@ -105,6 +106,51 @@ describe('Product form create tests', () => {
     await waitFor(() => {
       const messages = screen.queryAllByText('Campo obrigatorio');
       expect(messages).toHaveLength(0);
+    });
+  });
+});
+
+describe('Product form update tests', () => {
+  beforeEach(() => {
+    (useParams as jest.Mock).mockReturnValue({
+      productId: '2',
+    });
+  });
+
+  test('should show toast and redirect when submit form correctly', async () => {
+    render(
+      <Router history={history}>
+        <Form />
+        <ToastContainer />
+      </Router>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('name')).toHaveValue(productResponse.name);
+    });
+
+    const nameInput = screen.getByTestId('name');
+    const priceInput = screen.getByTestId('price');
+    const imgUrlInput = screen.getByTestId('imgUrl');
+    const descriptionInput = screen.getByTestId('description');
+    const formElement = screen.getByTestId('form');
+
+    expect(nameInput).toHaveValue(productResponse.name);
+    expect(priceInput).toHaveValue(String(productResponse.price));
+    expect(imgUrlInput).toHaveValue(productResponse.imgUrl);
+    expect(descriptionInput).toHaveValue(productResponse.description);
+
+    const ids = productResponse.categories.map((category) =>
+      String(category.id)
+    );
+    expect(formElement).toHaveFormValues({ categories: ids });
+
+    const submitButton = screen.getByRole('button', { name: /salvar/i });
+    userEvent.click(submitButton);
+
+    await waitFor(() => {
+      const toastElement = screen.getByText('Produto criado com sucesso!');
+      expect(toastElement).toBeInTheDocument();
     });
   });
 });

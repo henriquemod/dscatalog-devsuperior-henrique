@@ -44,7 +44,7 @@ const findCategoriesResponse = {
   empty: false,
 };
 
-const saveProductResponse = {
+export const productResponse = {
   id: 3,
   name: 'Macbook Pro',
   description:
@@ -54,6 +54,10 @@ const saveProductResponse = {
     'https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/3-big.jpg',
   date: '2020-07-14T10:00:00Z',
   categories: [
+    {
+      id: 2,
+      name: 'Eletrônicos',
+    },
     {
       id: 3,
       name: 'Computadores',
@@ -65,7 +69,13 @@ export const server = setupServer(
   rest.get(`${BASE_URL}/categories`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(findCategoriesResponse));
   }),
+  rest.get(`${BASE_URL}/products/:productId`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(productResponse));
+  }),
   rest.post(`${BASE_URL}/products`, (req, res, ctx) => {
-    return res(ctx.status(201), ctx.json(saveProductResponse));
+    return res(ctx.status(201), ctx.json(productResponse));
+  }),
+  rest.put(`${BASE_URL}/products/:productId`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(productResponse));
   })
 );
